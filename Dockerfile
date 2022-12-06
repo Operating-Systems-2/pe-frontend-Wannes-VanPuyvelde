@@ -1,8 +1,10 @@
 # pull official base image
-FROM node:18-alpine
+FROM node:13.12.0-alpine
 
 # set working directory
-WORKDIR /pe-frontend-Wannes-VanPuyvelde
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
 COPY package.json ./
