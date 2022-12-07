@@ -17,3 +17,8 @@ jobs:
     - name: Docker push
       run: |
         docker push wannesvp/pe-frontend
+    - name: Webhook
+      uses: jasongitmail/fast-webhook@v1
+      with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          json: '{}'
