@@ -1,19 +1,22 @@
-# pull official base image
-FROM node:13.12.0-alpine
+FROM node:16-alpine 
 
-# set working directory
+# Set the working directory to /app inside the container
 WORKDIR /app
 
-ENV PATH /app/node_modules/.bin:$PATH
+# Copy app files
+COPY . .
 
-# install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g --silent
+# Install dependencies (npm ci makes sure the exact versions in the lockfile gets installed)
+RUN npm ci 
 
-# add app
-COPY . ./
+# Build the app
+RUN npm run build
 
-# start app
-CMD ["npm", "start"]
+# Set the env to "production"
+ENV NODE_ENV production
+
+# Expose the port on which the app will be running (3000 is the default that serve uses)
+EXPOSE 3000
+
+# Start the app
+CMD [ "npx", "serve", "build" ]
